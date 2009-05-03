@@ -1,5 +1,7 @@
 This is a quick hack to the MGTwitterEngine 1.0.8 by Matt Gemmell to provide OAuth support.
 
+The change is largely to the initial authorisation, for which you use OAuth - see MyTwitter.h and then changes to MGTwitterEngine to use the OAuth Url Request object instead with the correct access details.
+
 Basically you use the OAuth code first to sort out the access tokens then you pass that in the MGTwitterEngine calls.
 
 The changes to MGTwitterEngine are for that purpose.
