@@ -1,0 +1,53 @@
+This is a quick hack to the MGTwitterEngine 1.0.8 by Matt Gemmell to provide OAuth support.
+
+Basically you use the OAuth code first to sort out the access tokens then you pass that in the MGTwitterEngine calls.
+
+The changes to MGTwitterEngine are for that purpose.
+
+Remember to set your Twitter key/secret in the MyTwitter.m file - in fact review that - only this should need changing for your purposes.
+
+
+
+You need OAuth from Jon Crosby - http://code.google.com/p/oauthconsumer/
+
+MGTwitterEngine 1.0.8 with tweaks for OAuth - https://github.com/kimptoc/MGTwitterEngine-1.0.8-OAuth/tree
+
+And the classes from this project - MyTwitter - https://github.com/kimptoc/MGTwitterEngine-1.0.8-OAuth-MyTwitter/tree
+
+To use, do this:
+
+In some suitable part of your app, check if you have been authorized with Twitter for this client
+
+	if (NO == [self.mytwitter isUserAuthorized])
+	{
+		UIAlertView *alert = [[UIAlertView alloc] 
+							  initWithTitle:@"MyApp Setup!" 
+							  message:[NSString stringWithFormat:@"To use this app, you need to authorise it with Twitter. Touch Continue to do so and Close when done."]
+							  delegate:self 
+							  cancelButtonTitle:@"Continue" 
+							  otherButtonTitles:nil]; 
+		[alert show]; 
+		[alert release]; 
+		
+		[self.mytwitter askForRequestToken];
+		
+	// throw up a browser with the twitter authorize url page	
+		[MyBrowser openRequest: [self.mytwitter authorizeURL]]; 
+		
+		// wait for browser to be closed...
+		
+		
+		
+	}
+
+When the user closes the browser (need some kind of callback to this)
+
+- (void)browserClosed: (id) thing
+{
+			[self.mytwitter askForAccessToken];
+}
+
+To send a tweet, you can do it via mytwitter, although the login stuff above means you don't need to:
+
+	NSString* connId = [self.mytwitter sendUpdate:tweet];
+
