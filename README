@@ -6,8 +6,9 @@ Basically you use the OAuth code first to sort out the access tokens then you pa
 
 The changes to MGTwitterEngine are for that purpose.
 
-Remember to set your Twitter key/secret in the MyTwitter.m file - in fact review that - only this should need changing for your purposes.
+Remember to set your Twitter key/secret in the MyTwitter.m file - in fact review that - this will need changing for your purposes.
 
+The cient/token/url details are probably as supplied when registering your app with twitter, here : http://twitter.com/oauth_clients/new .
 
 
 You need OAuth from Jon Crosby - http://code.google.com/p/oauthconsumer/

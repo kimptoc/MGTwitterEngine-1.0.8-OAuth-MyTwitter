@@ -39,7 +39,7 @@
 		[self.twitter setOaConsumer:self.consumer];
 		// turn off secure connection when debbugging via packet sniffer :)
 		//	[self.twitter setUsesSecureConnection:NO];
-		// TODO - get version from plist, get token from twitter peeps
+		// Not sure if the url/token is needed now we have oauth.  I use the same url as supplied when registering - here - http://twitter.com/oauth_clients/new .  For token, I used my app name as I want it to appear, ie same as client.
 		
 		[self.twitter setClientName:@"<your client>" 
 		 version:@"1" 
