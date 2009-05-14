@@ -34,6 +34,7 @@ In some suitable part of your app, check if you have been authorized with Twitte
 		[self.mytwitter askForRequestToken];
 		
 	// throw up a browser with the twitter authorize url page	
+	// I used the one provided by the mobclix analytics library, but that may not be to everyone's taste.
 		[MyBrowser openRequest: [self.mytwitter authorizeURL]]; 
 		
 		// wait for browser to be closed...
@@ -46,6 +47,8 @@ When the user closes the browser (need some kind of callback to this)
 
 - (void)browserClosed: (id) thing
 {
+	// this method then goes back to twitter.com and gets the access token, as per OAuth spec.
+	// this token is then used in all subsequent twitter interactions to prove this is authorised client.
 			[self.mytwitter askForAccessToken];
 }
 
