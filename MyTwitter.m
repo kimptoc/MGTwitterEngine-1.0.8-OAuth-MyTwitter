@@ -11,8 +11,6 @@
 #import "OAMutableURLRequest.h"
 #import "OADataFetcher.h"
 
-#import "Tweetum.h"
-
 #define kOAuthAccessTokenKey @"kOAuthAccessTokenKey"
 #define kOAuthAccessTokenSecret @"kOAuthAccessTokenSecret"
 #define kOAuthConsumerKey		@"<your key from twitter>"
