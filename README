@@ -11,7 +11,7 @@ Remember to set your Twitter key/secret in the MyTwitter.m file - in fact review
 The cient/token/url details are probably as supplied when registering your app with twitter, here : http://twitter.com/oauth_clients/new .
 
 
-You need OAuth from Jon Crosby - http://code.google.com/p/oauthconsumer/
+You need OAuth from Jon Crosby - http://code.google.com/p/oauthconsumer/ - note you also need to change this to handle the new oauth_verifier parameter, introduced in 1.0a of OAuth and now used by Twitter.
 
 MGTwitterEngine 1.0.8 with tweaks for OAuth - https://github.com/kimptoc/MGTwitterEngine-1.0.8-OAuth/tree
 
@@ -49,9 +49,15 @@ When the user closes the browser (need some kind of callback to this)
 - (void)browserClosed: (id) thing
 {
 	// this method then goes back to twitter.com and gets the access token, as per OAuth spec.
-	// this token is then used in all subsequent twitter interactions to prove this is authorised client.
-			[self.mytwitter askForAccessToken];
+
+// user will get shown a pincode, you need to ask the user for this pincode, which is then passed to twitter in the ask for access_token call.
+
 }
+
+Once you have the pincode, ask for the access token
+
+	// this token is then used in all subsequent twitter interactions to prove this is authorised client.
+			[self.mytwitter askForAccessToken: pincode];
 
 To send a tweet, you can do it via mytwitter, although the login stuff above means you don't need to:
 

@@ -39,9 +39,9 @@
 		//	[self.twitter setUsesSecureConnection:NO];
 		// Not sure if the url/token is needed now we have oauth.  I use the same url as supplied when registering - here - http://twitter.com/oauth_clients/new .  For token, I used my app name as I want it to appear, ie same as client.
 		
-		[self.twitter setClientName:@"<your client>" 
+		[self.twitter setClientName:@"<your client>"
 		 version:@"1" 
-		 URL:@"<your url>" 
+		 URL:@"<your url>"
 		 token:@"<your token>"];
 		
 		
@@ -79,13 +79,52 @@
 	return urlReq;
 }
 
-- (void) askForAccessToken ;
+- (void) askForPinCode;
+{
+	UIAlertView *alert = [[UIAlertView alloc] 
+						  initWithTitle: @"Twitter Pin Code" 
+						  message:@"Enter pincode"
+						  delegate:self
+						  cancelButtonTitle:@"Cancel"
+						  otherButtonTitles:@"OK", nil];
+	// this is non std api code... you should write your own popup window to ask user for pincode.
+	[alert addTextFieldWithValue:@"" label:@"Code"];
+	
+	// Name field
+	UITextField *tf = [alert textFieldAtIndex:0];
+	tf.clearButtonMode = UITextFieldViewModeWhileEditing;
+	tf.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+	tf.keyboardAppearance = UIKeyboardAppearanceAlert;
+//	tf.autocapitalizationType = UITextAutocapitalizationTypeWords;
+//	tf.autocorrectionType = UITextAutocorrectionTypeNo;
+	
+	[alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+{
+	// 0, is cancel, 1 is ok
+	// if 0, reshow browser, with pin code
+	// if 1, get pincode, if not null, not empty continue else reshow browser
+	NSString* pincode = [[alertView textFieldAtIndex:0] text];
+	if (0 == buttonIndex || nil == pincode || 0 == [pincode length])
+	{
+		// cancel or invalid pin - so do nothing
+		// user must start again
+	} else {
+		// go for access token
+		[self askForAccessToken:pincode];
+	}
+}
+
+- (void) askForAccessToken: (NSString*) pincode ;
 {
     NSURL *url = [NSURL URLWithString:@"http://twitter.com/oauth/access_token"];
 	
+	self.requestToken.verifier = pincode;
     OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url
                                                                    consumer:self.consumer
-                                                                      token:self.requestToken   // we don't have a Token yet
+                                                                      token:self.requestToken   // we now have a Token!
                                                                       realm:nil   // our service provider doesn't specify a realm
                                                           signatureProvider:nil]; // use the default method, HMAC-SHA1
 	
@@ -123,6 +162,11 @@
 }
 
 - (void) accessTokenTicket:(OAServiceTicket *)ticket didFailWithError:(NSData *)data {
+	if (nil != self.twitDelegate &&
+			[self.twitDelegate respondsToSelector:@selector(twitterAccessfailed)])
+	{
+		[self.twitDelegate twitterAccessfailed];		
+	}
 }
 
 - (void) accessTokenTicket:(OAServiceTicket *)ticket didFinishWithData:(NSData *)data {
@@ -130,8 +174,12 @@
 		NSString *responseBody = [[NSString alloc] initWithData:data
 													   encoding:NSUTF8StringEncoding];
 		self.accessToken = [[[OAToken alloc] initWithHTTPResponseBody:responseBody] autorelease];
-		[self.twitDelegate setConfig:[self.accessToken key] forKey:kOAuthAccessTokenKey];
-		[self.twitDelegate setConfig:[self.accessToken secret] forKey:kOAuthAccessTokenSecret];
+		if (nil != self.twitDelegate &&
+			[self.twitDelegate respondsToSelector:@selector(setConfig:forKey:)])
+		{
+			[self.twitDelegate setConfig:[self.accessToken key] forKey:kOAuthAccessTokenKey];
+			[self.twitDelegate setConfig:[self.accessToken secret] forKey:kOAuthAccessTokenSecret];
+		}
 		[self.twitter setOaToken:self.accessToken];
 		
 	}
@@ -150,19 +198,31 @@
 - (void)requestSucceeded:(NSString *)requestIdentifier;
 {
 	NSLog(@"requestSucceeded");
-	[self.twitDelegate tweetSucceeded:requestIdentifier];
+	if (nil != self.twitDelegate &&
+		[self.twitDelegate respondsToSelector:@selector(tweetSucceeded:)])
+	{
+		[self.twitDelegate tweetSucceeded:requestIdentifier];		
+	}
 }
 
 - (void)requestFailed:(NSString *)requestIdentifier withError:(NSError *)error;
 {
 	NSLog(@"requestFailed:%@", error);
-	[self.twitDelegate tweetFailed: requestIdentifier withError: error];
+	if (nil != self.twitDelegate &&
+		[self.twitDelegate respondsToSelector:@selector(tweetFailed:withError:)])
+	{
+		[self.twitDelegate tweetFailed: requestIdentifier withError: error];
+	}
 }
 
 - (void)statusesReceived:(NSArray *)statuses forRequest:(NSString *)identifier;
 {
 	NSLog(@"statusesReceived");
-	[self.twitDelegate tweetsReceived:statuses forRequest:identifier];
+	if (nil != self.twitDelegate &&
+		[self.twitDelegate respondsToSelector:@selector(tweetsReceived:forRequest:)])
+		{
+		[self.twitDelegate tweetsReceived:statuses forRequest:identifier];		
+	}
 }
 
 - (void)directMessagesReceived:(NSArray *)messages forRequest:(NSString *)identifier;

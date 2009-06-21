@@ -22,10 +22,14 @@
 - (BOOL)isUserAuthorized;
 - (MyTwitter*)init;
 - (NSString *)sendUpdate:(NSString *)status;
-- (void) askForAccessToken ;
+- (void) askForAccessToken: (NSString*) pincode ;
 - (void) askForRequestToken ;
 - (NSURLRequest*) authorizeURL;
 
+- (void) askForPinCode;
+
+
+@property(nonatomic,retain)TwitAccount *currentAccount;
 
 
 
