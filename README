@@ -1,5 +1,11 @@
 This is a quick hack to the MGTwitterEngine 1.0.8 by Matt Gemmell to provide OAuth support.
 
+I reccomend you DO NOT USE this, but instead look at the more complete sample project by Isaiah.  
+http://github.com/yourhead/OAuth_ObjC_Test_App/tree/master
+
+Although I am not sure if it handles the latest OAuth change relating to verifier/pincode, see below
+
+
 The change is largely to the initial authorisation, for which you use OAuth - see MyTwitter.h and then changes to MGTwitterEngine to use the OAuth Url Request object instead with the correct access details.
 
 Basically you use the OAuth code first to sort out the access tokens then you pass that in the MGTwitterEngine calls.
@@ -11,7 +17,7 @@ Remember to set your Twitter key/secret in the MyTwitter.m file - in fact review
 The cient/token/url details are probably as supplied when registering your app with twitter, here : http://twitter.com/oauth_clients/new .
 
 
-You need OAuth from Jon Crosby - http://code.google.com/p/oauthconsumer/ - note you also need to change this to handle the new oauth_verifier parameter, introduced in 1.0a of OAuth and now used by Twitter.
+You need OAuth from Jon Crosby - http://code.google.com/p/oauthconsumer/ - note you also need to change this to handle the new oauth_verifier parameter, introduced in 1.0a of OAuth and now used by Twitter. See my comment at the end of this page http://code.google.com/p/oauthconsumer/wiki/UsingOAuthConsumer for details of the changes.
 
 MGTwitterEngine 1.0.8 with tweaks for OAuth - https://github.com/kimptoc/MGTwitterEngine-1.0.8-OAuth/tree
 
