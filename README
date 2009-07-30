@@ -5,6 +5,8 @@ http://github.com/yourhead/OAuth_ObjC_Test_App/tree/master
 
 Although I am not sure if it handles the latest OAuth change relating to verifier/pincode, see below
 
+Also be aware of the late July 2009 changes around the verifier/signature - this blog entry has the fix:
+http://nullagenda.com/oauthconsumer-and-twitter-114
 
 The change is largely to the initial authorisation, for which you use OAuth - see MyTwitter.h and then changes to MGTwitterEngine to use the OAuth Url Request object instead with the correct access details.
 
