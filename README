@@ -1,3 +1,6 @@
+The licence for use of this code is the MIT licence, based on that is what OAuth uses and also there is very little code here, just a few lines to glue OAuth and MGTwitterEngine together.
+
+
 This is a quick hack to the MGTwitterEngine 1.0.8 by Matt Gemmell to provide OAuth support.
 
 I reccomend you DO NOT USE this, but instead look at the more complete sample project by Isaiah.  
