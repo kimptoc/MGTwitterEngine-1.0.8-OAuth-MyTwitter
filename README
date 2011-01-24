@@ -6,6 +6,8 @@ This is a quick hack to the MGTwitterEngine 1.0.8 by Matt Gemmell to provide OAu
 I reccomend you DO NOT USE this, but instead look at the more complete sample project by Isaiah.  
 http://github.com/yourhead/OAuth_ObjC_Test_App/tree/master
 
+Or the offical MGTwitterEngine, which has been updated for OAuth - https://github.com/mattgemmell/MGTwitterEngine.
+
 Although I am not sure if it handles the latest OAuth change relating to verifier/pincode, see below
 
 Also be aware of the late July 2009 changes around the verifier/signature - this blog entry has the fix:
